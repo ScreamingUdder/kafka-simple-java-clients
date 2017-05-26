@@ -1,4 +1,5 @@
-import KafkaMessage.Message;
+import EventMessage.*;
+import FlatBufferDeserializer.FlatBufferDeserializer;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
@@ -25,28 +26,25 @@ public class SimpleKafkaConsumer {
         props.put("auto.commit.interval.ms", "1000");
         props.put("session.timeout.ms", "30000");
         props.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
-        props.put("value.deserializer", "org.apache.kafka.common.serialization.ByteArrayDeserializer");
+        props.put("auto.offset.reset","earliest");
+        props.put("value.deserializer", FlatBufferDeserializer.class.getName());
 
-        KafkaConsumer<byte[],byte[]> consumer = new KafkaConsumer<>(props);
+        KafkaConsumer<String,EventMessage> consumer = new KafkaConsumer<>(props);
 
         consumer.subscribe(Arrays.asList(topicName));
 
         System.out.println("Subscribed to topic " + topicName);
-        int i = 0;
-
         while (true) {
-            ConsumerRecords<byte[],byte[]> records = consumer.poll(100);
+            ConsumerRecords<String,EventMessage> records = consumer.poll(100);
 
 
-            for (ConsumerRecord<byte[],byte[]> record: records) {
+            for (ConsumerRecord<String,EventMessage> record: records) {
 
-                byte[] bytes = record.value();
+                EventMessage eventMessagePOJO = record.value();
+                System.out.println(eventMessagePOJO.messageId());
+                System.out.println(eventMessagePOJO.pulseTime());
 
-                java.nio.ByteBuffer buf = java.nio.ByteBuffer.wrap(bytes);
-                Message message = Message.getRootAsMessage(buf);
-
-                System.out.printf("offset = %d, key = %s, value = %s\n",record.offset(), record.key(), message.contents());
-
+                //System.out.printf("offset = %d, key = %s, value = %d\n",record.offset(), record.key(), eventMessagePOJO.pulseTime());
             }
         }
     }
