@@ -1,3 +1,4 @@
+import EventMessage.*;
 import FlatBufferSerializer.FlatBufferSerializer;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.Producer;
@@ -27,12 +28,17 @@ class SimpleKafkaProducer {
         props.put("linger.ms",1);
         props.put("buffer.memory",33444432); // memory available to the buffer
         props.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
-        props.put("value.serializer", FlatBufferSerializer.class);
+        props.put("value.serializer", FlatBufferSerializer.class.getName());
 
-        Producer<String, String> producer = new KafkaProducer<>(props);
+        Producer<String, EventMessage> producer = new KafkaProducer<>(props);
 
         for (int i = 0; i < 10; i++) {
-            producer.send(new ProducerRecord(topicName,Integer.toString(i)));
+            long pulseTime = i * 100;
+            EventMessagePOJO eventMessagePOJO = new EventMessagePOJO(i,pulseTime);
+            eventMessagePOJO.addDetector(i);
+            eventMessagePOJO.addDetector(i + 1);
+            eventMessagePOJO.addDetector(i + 2);
+            producer.send(new ProducerRecord(topicName,eventMessagePOJO));
             System.out.println("Message sent successfully");
         }
 
