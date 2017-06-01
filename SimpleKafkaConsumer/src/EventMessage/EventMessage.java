@@ -1,4 +1,5 @@
-package EventMessage;// automatically generated, do not modify
+// CHECKSTYLE:OFF
+package eventmessage;// automatically generated, do not modify
 
 import com.google.flatbuffers.FlatBufferBuilder;
 import com.google.flatbuffers.Table;

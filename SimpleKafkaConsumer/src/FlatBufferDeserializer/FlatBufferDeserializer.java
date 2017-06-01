@@ -1,21 +1,28 @@
-package FlatBufferDeserializer;
+package flatbufferdeserializer;
 
-import EventMessage.EventMessage;
-import EventMessage.EventMessagePOJO;
+import eventmessage.EventMessage;
+import eventmessage.EventMessagePOJO;
 
 import java.util.Map;
 
 /**
- * Created by sci28761 on 15/05/2017.
+ * Created by ISIS,STFC on 15/05/2017.
  */
 public class FlatBufferDeserializer implements org.apache.kafka.common.serialization.Deserializer<EventMessagePOJO> {
+    /**
+     *
+     * @param topic Kafka topic name
+     * @param bytes Bytes received by Kafka consumer
+     * @return EventMessagePOJO
+     */
     @Override
-    public EventMessagePOJO deserialize(String topic, byte[] bytes) {
+    public EventMessagePOJO deserialize(final String topic, final byte[] bytes) {
         EventMessage eventMessage = EventMessage.getRootAsEventMessage(java.nio.ByteBuffer.wrap(bytes));
-        EventMessagePOJO eventMessagePOJO = new EventMessagePOJO((int) eventMessage.messageId(),eventMessage.pulseTime());
-        for (int i = 0; i < eventMessage.detectorIdLength();i++) {
+        int eventMessageId = (int) eventMessage.messageId();
+        EventMessagePOJO eventMessagePOJO = new EventMessagePOJO(eventMessageId, eventMessage.pulseTime());
+
+        for (int i = 0; i < eventMessage.detectorIdLength(); i++) {
             int detectorID = (int) eventMessage.detectorId(i);
-            //System.out.println(detectorID);
             System.out.println(eventMessagePOJO.getPulseTime());
             eventMessagePOJO.addDetector(detectorID);
         }
@@ -31,7 +38,7 @@ public class FlatBufferDeserializer implements org.apache.kafka.common.serializa
     }
 
     @Override
-    public void configure(Map map, boolean b) {
+    public void configure(final Map map, final boolean b) {
 
     }
 }

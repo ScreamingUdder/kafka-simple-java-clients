@@ -1,28 +1,88 @@
-package EventMessage;
+package eventmessage;
 
 import java.util.ArrayList;
 
 /**
- * Created by sci28761 on 24/05/2017.
+ * POJO for the Event Message, designed for easier use when not being sent over Kafka.
  */
 public class EventMessagePOJO {
     private int messageId;
     private long pulseTime;
     private ArrayList<Integer> detectors;
 
-    public EventMessagePOJO(int messageId,long pulseTime) {
+    /**
+     *
+     * @param messageId Detection Event Message ID.
+     * @param pulseTime Time since pulse
+     *
+     */
+    public EventMessagePOJO(final int messageId, final long pulseTime) {
         this.messageId = messageId;
         this.pulseTime = pulseTime;
     }
 
-    public void setMessageId(int messageId) { this.messageId = messageId;}
-    public int getMessageId() { return  messageId;}
+    /**
+     * Set the message id.
+     * @param messageId Detection Event Message ID
+     */
+    public void setMessageId(final int messageId) {
+        this.messageId = messageId;
+    }
 
-    public void setPulseTime(long pulseTime) { this.pulseTime = pulseTime;}
-    public long getPulseTime() { return  pulseTime;}
+    /**
+     * Get the message id.
+     * @return Detection Event Message ID
+     */
+    public int getMessageId() {
+        return messageId;
+    }
 
-    public void setDetectors(ArrayList detectors) {this.detectors = detectors;}
-    public ArrayList getDetectors() {return detectors;};
-    public void addDetector(int detector) {detectors.add(detector);}
-    public int getDetector(int index) { return detectors.get(index);}
+    /**
+     * Set the pulse time.
+     * @param pulseTime Time since pulse
+     */
+    public void setPulseTime(final long pulseTime) {
+        this.pulseTime = pulseTime;
+    }
+
+    /**
+     * Get the pulse time.
+     * @return Time since pulse
+     */
+    public long getPulseTime() {
+        return pulseTime;
+    }
+
+    /**
+     * Set the detectors.
+     * @param detectors The detectors of the Detection Event Message
+     */
+    public void setDetectors(final ArrayList detectors) {
+        this.detectors = detectors;
+    }
+
+    /**
+     * Get the detectors.
+     * @return The detectors of the Detection Event Message
+     */
+    public ArrayList getDetectors() {
+        return detectors;
+    }
+
+    /**
+     * Add a detector to the detector event message.
+     * @param detector The Detector ID
+     */
+    public void addDetector(final int detector) {
+        detectors.add(detector);
+    }
+
+    /**
+     * Get a detector from the Detector Event Message.
+     * @param index The index of te detectors array, not the detector ID
+     * @return The ID of the detector
+     */
+    public int getDetector(final int index) {
+        return detectors.get(index);
+    }
 }
