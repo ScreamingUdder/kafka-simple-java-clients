@@ -17,6 +17,10 @@ public class EventMessagePOJOTest {
      */
     @org.junit.Test
     public void setMessageId() throws Exception {
+        EventMessagePOJO eventMessagePOJO = new EventMessagePOJO(DEFAULT_MESSAGE_ID, DEFAULT_PULSE_TIME);
+        assertSame(DEFAULT_MESSAGE_ID, eventMessagePOJO.getMessageId());
+        eventMessagePOJO.setMessageId(1);
+        assertSame(1, eventMessagePOJO.getMessageId());
     }
 
 }
