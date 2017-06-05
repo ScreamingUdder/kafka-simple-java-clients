@@ -19,6 +19,7 @@ public class EventMessagePOJO {
     public EventMessagePOJO(final int messageId, final long pulseTime) {
         this.messageId = messageId;
         this.pulseTime = pulseTime;
+        detectors = new ArrayList<>();
     }
 
     /**
@@ -65,7 +66,7 @@ public class EventMessagePOJO {
      * Get the detectors.
      * @return The detectors of the Detection Event Message
      */
-    public ArrayList getDetectors() {
+    public ArrayList<Integer> getDetectors() {
         return detectors;
     }
 
@@ -79,7 +80,7 @@ public class EventMessagePOJO {
 
     /**
      * Get a detector from the Detector Event Message.
-     * @param index The index of te detectors array, not the detector ID
+     * @param index The index of the detectors array, not the detector ID
      * @return The ID of the detector
      */
     public int getDetector(final int index) {
